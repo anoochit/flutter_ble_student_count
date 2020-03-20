@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   searchName(String id) {
-    String name = "";
+    String name = "Noname";
     studentList.forEach((data) {
       if (data.id == id) {
         name = data.name;
@@ -69,9 +69,8 @@ class _HomePageState extends State<HomePage> {
     return name;
   }
 
-  Widget buildList(ScanResult scanResult) {
+  Widget buildList(ScanResult scanResult, String name) {
     log(scanResult.device.id.toString());
-    String name = searchName(scanResult.device.id.toString());
     return ListTile(
       leading: CircleAvatar(
         child: Text(name.substring(0, 2).toUpperCase()),
@@ -105,7 +104,12 @@ class _HomePageState extends State<HomePage> {
                   ? ListView.builder(
                       itemCount: scanResult.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return buildList(scanResult[index]);
+                        String name =
+                            searchName(scanResult[index].device.id.toString());
+                        if (name != "Noname") {
+                          return buildList(scanResult[index], name);
+                        }
+                        return Container();
                       },
                     )
                   : Container())),
